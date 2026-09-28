@@ -10,6 +10,8 @@ In a two-run conversation-prompt test on 2026-09-28, exact decoding measured abo
 
 An earlier, faster approximate mode, `fast4s`, measured **5.555 tok/s** versus **1.955 tok/s** exact on a different fixed-prompt test. In a separate one-text evaluation, its NLL was **5.98% higher** than exact. These are distinct tests; NLL is one language-modeling metric, not a general quality score.
 
+The full project notes compare six named modes, from `exact` through `fast5`. `jevq6s` is the current quality-priority starting point in the limited tests; `fast5` reached the highest measured speed but is not recommended as the default because of its larger NLL difference. The experimental launcher can select modes by name, but its code is still being prepared for public release.
+
 → [Read benchmark notes, limitations, and the experiment plan](https://github.com/jun3982002-droid/glm53-64gb-mac)
 
 ## What sponsorship supports
