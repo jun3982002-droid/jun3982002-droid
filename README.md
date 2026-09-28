@@ -12,6 +12,8 @@ An earlier, faster approximate mode, `fast4s`, measured **5.555 tok/s** versus *
 
 The full project notes compare six named modes, from `exact` through `fast5`. `jevq6s` is the current quality-priority starting point in the limited tests; `fast5` reached the highest measured speed but is not recommended as the default because of its larger NLL difference. The experimental launcher can select modes by name, but its code is still being prepared for public release.
 
+A later test on 2026-09-28 found one reproducible case where `jevq6s` answered with unrelated text; whether it happened depended on the earlier requests. The launcher now runs the first 16 decode steps of each answer without approximation. That fixed the reproduced case, but it lowers speed on short answers (about 15% for `jevq6s` on 64-token answers). The same night's notes also compare `jevq6s` with two other locally run models on small Japanese question sets.
+
 → [Read benchmark notes, limitations, and the experiment plan](https://github.com/jun3982002-droid/glm53-64gb-mac)
 
 ## What sponsorship supports
