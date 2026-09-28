@@ -1,24 +1,21 @@
 # Large MoE Inference on a 64 GB Mac
 
-I investigate how far large open-weight models can run on a 64 GB Apple Silicon Mac when most routed expert weights live on SSD.
+How far can a 64 GB Apple Silicon Mac run a model whose weights are much larger than memory?
 
-My current case study is **GLM-5.3 Full, IQ2_XXS quantization**, running through an experimental fork based on [DS4](https://github.com/antirez/ds4). I run controlled measurements and am preparing a reproducibility pack with the setup, code changes, and trade-offs—including cases where a speed idea does not help.
+I measure SSD-streamed inference for **GLM-5.3 Full, IQ2_XXS quantization** (196.58 GiB model file) on an M4 Max with 64 GB unified memory. The experimental runtime is based on [DS4](https://github.com/antirez/ds4). I publish speed and quality trade-offs, including results that do not support a speedup claim.
 
-## Current research
+## A measured speed/quality trade-off
 
-- Two-SSD streaming on an M4 Max with 64 GB unified memory
-- Exact decoding and explicitly approximate expert-substitution modes
-- Measurements of prefill, decode, storage limits, and output quality
-- Next: test whether a third NVMe drive or a different storage path changes real inference speed
+In a two-run conversation-prompt test on 2026-09-28, exact decoding measured about **2.1 tok/s**. The experimental approximate mode `jevq6s` measured **3.60 tok/s**, about **1.7×** the exact result. Its NLL was **+2.06%** and **+2.03%** versus exact on two Japanese texts (959 and 2,222 tokens scored). This is a small evaluation, not a general quality guarantee.
 
-## A measured snapshot
+An earlier, faster approximate mode, `fast4s`, measured **5.555 tok/s** versus **1.955 tok/s** exact on a different fixed-prompt test. In a separate one-text evaluation, its NLL was **5.98% higher** than exact. These are distinct tests; NLL is one language-modeling metric, not a general quality score.
 
-On a fixed Japanese prompt with 64 generated tokens (two runs per mode, 2026-09-27), `exact` averaged **1.955 tok/s** and approximate `fast4s` averaged **5.555 tok/s**—a 2.84× ratio of those two-run means. `fast4s` uses resident-expert substitution, so this is a speed/quality trade-off, not a lossless speedup. In a separate evaluation, its NLL was 5.98% higher on one 991-token text (959 scored); NLL is not a general quality score.
+→ [Read benchmark notes, limitations, and the experiment plan](https://github.com/jun3982002-droid/glm53-64gb-mac)
 
-**The extra drive is an experiment, not a promised upgrade.** A third drive could raise the storage ceiling. Shared connections, scheduling, or other runtime costs may still limit the end-to-end gain, so I will measure it rather than predict it.
+## What sponsorship supports
 
-→ [Read the benchmark notes and experiment plan](https://github.com/jun3982002-droid/glm53-64gb-mac)
+The next milestone is a controlled comparison of the current internal-plus-external SSD setup with an added third NVMe drive. Support will help cover the test SSD and any required enclosure or cable. A third drive may raise the storage ceiling, but shared connections or other runtime costs may prevent an end-to-end speedup. I will publish the setup and result either way.
 
-→ **[Support the experiments through GitHub Sponsors](https://github.com/sponsors/jun3982002-droid)**
+**[Support the experiments through GitHub Sponsors](https://github.com/sponsors/jun3982002-droid)**
 
-Help make the next hardware comparison reproducible: one added SSD, a documented setup, and public results others can build on. The result may show no speedup; it will be reported either way.
+If this research is useful to you, a one-time or monthly sponsorship helps make the next hardware comparison possible. The benchmark notes and results will remain public; sponsorship does not guarantee a speedup or buy private results. Sharing the project also helps.
