@@ -4,6 +4,12 @@ How far can a 64 GB Apple Silicon Mac run a model whose weights are much larger 
 
 I measure SSD-streamed inference for **GLM-5.3 Full, IQ2_XXS quantization** (196.58 GiB model file) on an M4 Max with 64 GB unified memory. The experimental runtime is based on [DS4](https://github.com/antirez/ds4). I publish speed and quality trade-offs, including results that do not support a speedup claim.
 
+## Recent DeepSeek V4.1 Flash result (2026-10-09)
+
+The 93,030-token DS4 benchmark averaged 15.11–15.26 tok/s over completed 512-token decode runs; the fastest run reached 15.37 tok/s in steady state. A separate 22,034-token repeated-output API trial peaked at **17.39 tok/s in a rolling 50-token window**; over 2,048 generated tokens it measured 15.93 tok/s in the server log and 15.35 tok/s at the client. That trial ended at the token limit in the reasoning channel without a visible answer, so the result is speed-only and does not show answer quality. The tests used different prompts and measurement paths.
+
+→ [Full conditions and limitations](https://github.com/jun3982002-droid/glm53-64gb-mac#recent-deepseek-v41-flash-decode-results-2026-10-09)
+
 ## A measured speed/quality trade-off
 
 In a two-run conversation-prompt test on 2026-09-28, exact decoding measured about **2.1 tok/s**. The experimental approximate mode `jevq6s` measured **3.60 tok/s**, about **1.7×** the exact result. Its NLL was **+2.06%** and **+2.03%** versus exact on two Japanese texts (959 and 2,222 tokens scored). This is a small evaluation, not a general quality guarantee.
